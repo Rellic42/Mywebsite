@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Text to Video</title>
+  </head>
+  <body>
+    <h1>Text to Video</h1>
+    <form>
+      <label for="text">Text:</label>
+      <textarea id="text" rows="4" cols="50"></textarea>
+      <br><br>
+      <button id="submit">Convert</button>
+    </form>
+    <br>
+    <video id="video" controls></video>
+    <script>
+      const submitButton = document.querySelector("#submit");
+      const textArea = document.querySelector("#text");
+      const video = document.querySelector("#video");
+
+      submitButton.addEventListener("click", async function (event) {
+        event.preventDefault();
+
+        const response = await fetch("/convert", {
+          method: "POST",
+          body: JSON.stringify({ text: textArea.value }),
+          headers: { "Content-Type": "application/json" },
+        });
+        const url = await response.text();
+
+        video.src = url;
+      });
+    </script>
+  </body>
+</html>
